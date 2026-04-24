@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Japanese Name Generator – Random Japanese Names with Meanings</title>
+  <meta name="description" content="Free Japanese name generator with meanings and kanji. Generate random Japanese male names, female names, last names, city names, clan names, and more instantly." />
+  <meta name="keywords" content="japanese name generator, random japanese name generator, japanese names generator, japanese last name generator, japanese female name generator, japanese male name generator, japanese name generator with meanings, japanese city name generator, japanese clan name generator, japanese family name generator" />
+  <link rel="canonical" href="https://japanesenames.github.io/japanese-name-generator/" />
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Japanese Name Generator – Random Japanese Names with Meanings" />
+  <meta property="og:description" content="Generate authentic Japanese names with kanji and English meanings. Male, female, family, city, clan names — all free." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://japanesenames.github.io/japanese-name-generator/" />
+
+  <!-- Schema Markup -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Japanese Name Generator",
+    "url": "https://japanesenames.github.io/japanese-name-generator/",
+    "description": "Free tool to generate random Japanese names with kanji characters and English meanings",
+    "applicationCategory": "UtilityApplication",
+    "operatingSystem": "Any",
+    "offers": { "@type": "Offer", "price": "0" }
+  }
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;600;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --ink: #1a1410;
+      --paper: #faf7f2;
+      --red: #c0392b;
+      --red-soft: #e8d5d3;
+      --gold: #b8860b;
+      --mist: #e8e3da;
+      --shadow: rgba(26,20,16,0.12);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--paper);
+      color: var(--ink);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* === BACKGROUND TEXTURE === */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        radial-gradient(ellipse at 20% 10%, rgba(192,57,43,0.04) 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 90%, rgba(184,134,11,0.04) 0%, transparent 50%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* === HEADER === */
+    header {
+      position: relative;
+      z-index: 1;
+      padding: 3rem 2rem 2rem;
+      text-align: center;
+      border-bottom: 1px solid var(--mist);
+    }
+
+    .site-kamon {
+      font-size: 2.5rem;
+      line-height: 1;
+      margin-bottom: 1rem;
+      display: block;
+      opacity: 0.7;
+    }
+
+    h1 {
+      font-family: 'Shippori Mincho', serif;
+      font-size: clamp(2rem, 5vw, 3.2rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: var(--ink);
+      line-height: 1.1;
+    }
+
+    h1 span {
+      color: var(--red);
+    }
+
+    .tagline {
+      margin-top: 0.75rem;
+      font-size: 1rem;
+      font-weight: 300;
+      color: #6b5f54;
+      letter-spacing: 0.03em;
+    }
+
+    .kanji-accent {
+      display: block;
+      font-family: 'Shippori Mincho', serif;
+      font-size: 1.1rem;
+      color: var(--red);
+      opacity: 0.5;
+      letter-spacing: 0.3em;
+      margin-top: 0.4rem;
+    }
+
+    /* === MAIN LAYOUT === */
+    main {
+      position: relative;
+      z-index: 1;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 2.5rem 1.5rem 4rem;
+    }
+
+    /* === TABS === */
+    .tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-bottom: 2rem;
+      border-bottom: 2px solid var(--mist);
+      padding-bottom: 1rem;
+    }
+
+    .tab-btn {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      padding: 0.45rem 1.1rem;
+      border: 1.5px solid var(--mist);
+      border-radius: 2rem;
+      background: transparent;
+      color: #6b5f54;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .tab-btn:hover {
+      border-color: var(--red);
+      color: var(--red);
+    }
+
+    .tab-btn.active {
+      background: var(--red);
+      border-color: var(--red);
+      color: white;
+    }
+
+    /* === GENERATOR PANEL === */
+    .generator-panel {
+      display: none;
+    }
+
+    .generator-panel.active {
+      display: block;
+      animation: fadeUp 0.3s ease;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .panel-header {
+      margin-bottom: 1.5rem;
+    }
+
+    .panel-header h2 {
+      font-family: 'Shippori Mincho', serif;
+      font-size: 1.5rem;
+      font-weight: 600;
+    }
+
+    .panel-header p {
+      font-size: 0.9rem;
+      color: #6b5f54;
+      margin-top: 0.3rem;
+      line-height: 1.6;
+    }
+
+    /* === CONTROLS === */
+    .controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      align-items: center;
+      margin-bottom: 2rem;
+    }
+
+    .gender-toggle {
+      display: flex;
+      border: 1.5px solid var(--mist);
+      border-radius: 0.5rem;
+      overflow: hidden;
+    }
+
+    .gender-btn {
+      padding: 0.5rem 1.2rem;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 500;
+      border: none;
+      background: transparent;
+      color: #6b5f54;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .gender-btn.active {
+      background: var(--ink);
+      color: var(--paper);
+    }
+
+    .count-select {
+      padding: 0.5rem 0.9rem;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.85rem;
+      border: 1.5px solid var(--mist);
+      border-radius: 0.5rem;
+      background: transparent;
+      color: var(--ink);
+      cursor: pointer;
+    }
+
+    .generate-btn {
+      padding: 0.6rem 2rem;
+      font-family: 'Shippori Mincho', serif;
+      font-size: 1rem;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      background: var(--red);
+      color: white;
+      border: none;
+      border-radius: 0.5rem;
+      cursor: pointer;
+      transition: all 0.2s;
+      box-shadow: 0 3px 12px rgba(192,57,43,0.25);
+    }
+
+    .generate-btn:hover {
+      background: #a93226;
+      transform: translateY(-1px);
+      box-shadow: 0 5px 18px rgba(192,57,43,0.35);
+    }
+
+    .generate-btn:active {
+      transform: translateY(0);
+    }
+
+    /* === RESULTS GRID === */
+    .results-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 1rem;
+      min-height: 100px;
+    }
+
+    .name-card {
+      background: white;
+      border: 1px solid var(--mist);
+      border-radius: 0.75rem;
+      padding: 1.25rem 1.25rem 1rem;
+      position: relative;
+      cursor: pointer;
+      transition: all 0.2s;
+      animation: cardIn 0.3s ease both;
+    }
+
+    .name-card:hover {
+      border-color: var(--red);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px var(--shadow);
+    }
+
+    @keyframes cardIn {
+      from { opacity: 0; transform: scale(0.95); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    .card-kanji {
+      font-family: 'Shippori Mincho', serif;
+      font-size: 1.8rem;
+      font-weight: 600;
+      color: var(--red);
+      line-height: 1;
+      margin-bottom: 0.5rem;
+    }
+
+    .card-name {
+      font-family: 'Shippori Mincho', serif;
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--ink);
+    }
+
+    .card-meaning {
+      font-size: 0.78rem;
+      color: #8a7a6e;
+      margin-top: 0.25rem;
+      font-style: italic;
+    }
+
+    .card-copy {
+      position: absolute;
+      top: 0.75rem;
+      right: 0.75rem;
+      font-size: 0.65rem;
+      color: #bbb;
+      transition: color 0.2s;
+    }
+
+    .name-card:hover .card-copy {
+      color: var(--red);
+    }
+
+    /* === FULL NAME RESULT (for combined generator) === */
+    .full-name-result {
+      background: white;
+      border: 1px solid var(--mist);
+      border-radius: 1rem;
+      padding: 2rem;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+      animation: cardIn 0.3s ease both;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .full-name-result:hover {
+      border-color: var(--red);
+      box-shadow: 0 4px 16px var(--shadow);
+    }
+
+    .full-name-kanji-block {
+      font-family: 'Shippori Mincho', serif;
+      font-size: 2.8rem;
+      color: var(--red);
+      line-height: 1;
+      min-width: 5rem;
+      text-align: center;
+    }
+
+    .full-name-details { flex: 1; }
+
+    .full-name-roman {
+      font-family: 'Shippori Mincho', serif;
+      font-size: 1.4rem;
+      font-weight: 600;
+    }
+
+    .full-name-sub {
+      font-size: 0.82rem;
+      color: #8a7a6e;
+      margin-top: 0.3rem;
+      font-style: italic;
+    }
+
+    /* === COPY TOAST === */
+    .toast {
+      position: fixed;
+      bottom: 2rem;
+      left: 50%;
+      transform: translateX(-50%) translateY(4rem);
+      background: var(--ink);
+      color: white;
+      padding: 0.65rem 1.5rem;
+      border-radius: 2rem;
+      font-size: 0.85rem;
+      font-weight: 500;
+      transition: transform 0.3s ease;
+      z-index: 999;
+      pointer-events: none;
+    }
+
+    .toast.show {
+      transform: translateX(-50%) translateY(0);
+    }
+
+    /* === INFO SECTION (SEO content) === */
+    .info-section {
+      margin-top: 4rem;
+      padding-top: 2.5rem;
+      border-top: 1px solid var(--mist);
+    }
+
+    .info-section h2 {
+      font-family: 'Shippori Mincho', serif;
+      font-size: 1.6rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+    }
+
+    .info-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 2.5rem;
+    }
+
+    .info-card {
+      background: white;
+      border: 1px solid var(--mist);
+      border-radius: 0.75rem;
+      padding: 1.25rem;
+    }
+
+    .info-card h3 {
+      font-family: 'Shippori Mincho', serif;
+      font-size: 1rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      color: var(--red);
+    }
+
+    .info-card p {
+      font-size: 0.875rem;
+      color: #5a5048;
+      line-height: 1.65;
+    }
+
+    .faq-item {
+      margin-bottom: 1.5rem;
+    }
+
+    .faq-item h3 {
+      font-family: 'Shippori Mincho', serif;
+      font-size: 1rem;
+      font-weight: 600;
+      margin-bottom: 0.4rem;
+    }
+
+    .faq-item p {
+      font-size: 0.875rem;
+      color: #5a5048;
+      line-height: 1.65;
+    }
+
+    /* === FOOTER === */
+    footer {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      padding: 2rem;
+      border-top: 1px solid var(--mist);
+      font-size: 0.8rem;
+      color: #9a8a7e;
+    }
+
+    footer a { color: var(--red); text-decoration: none; }
+
+    /* === RESPONSIVE === */
+    @media (max-width: 600px) {
+      .full-name-result { flex-direction: column; gap: 0.75rem; text-align: center; }
+      .full-name-kanji-block { font-size: 2rem; }
+      .results-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <span class="site-kamon">家</span>
+  <h1>Japanese <span>Name</span> Generator</h1>
+  <p class="tagline">Random Japanese names with kanji &amp; English meanings</p>
+  <span class="kanji-accent">名前生成器</span>
+</header>
+
+<main>
+
+  <!-- TABS -->
+  <nav class="tabs" role="tablist" aria-label="Generator types">
+    <button class="tab-btn active" data-tab="full"    role="tab">✦ Full Name</button>
+    <button class="tab-btn"        data-tab="male"    role="tab">Male Names</button>
+    <button class="tab-btn"        data-tab="female"  role="tab">Female Names</button>
+    <button class="tab-btn"        data-tab="family"  role="tab">Last Names</button>
+    <button class="tab-btn"        data-tab="city"    role="tab">City Names</button>
+    <button class="tab-btn"        data-tab="clan"    role="tab">Clan Names</button>
+  </nav>
+
+  <!-- FULL NAME GENERATOR -->
+  <section class="generator-panel active" id="tab-full" role="tabpanel">
+    <div class="panel-header">
+      <h2>Japanese Name Generator</h2>
+      <p>Generate a complete Japanese name — first name + family name — with kanji characters and meanings. Perfect for characters, stories, games, or learning.</p>
+    </div>
+    <div class="controls">
+      <div class="gender-toggle" id="full-gender">
+        <button class="gender-btn active" data-gender="random">Random</button>
+        <button class="gender-btn" data-gender="male">Male</button>
+        <button class="gender-btn" data-gender="female">Female</button>
+      </div>
+      <select class="count-select" id="full-count">
+        <option value="1">1 name</option>
+        <option value="3">3 names</option>
+        <option value="5" selected>5 names</option>
+        <option value="10">10 names</option>
+      </select>
+      <button class="generate-btn" id="full-generate">Generate Names</button>
+    </div>
+    <div id="full-results"></div>
+  </section>
+
+  <!-- MALE NAMES -->
+  <section class="generator-panel" id="tab-male" role="tabpanel">
+    <div class="panel-header">
+      <h2>Japanese Male Name Generator</h2>
+      <p>Generate random Japanese male first names with kanji and meanings. Includes traditional and modern Japanese boy names.</p>
+    </div>
+    <div class="controls">
+      <select class="count-select" id="male-count">
+        <option value="4">4 names</option>
+        <option value="8" selected>8 names</option>
+        <option value="12">12 names</option>
+        <option value="20">20 names</option>
+      </select>
+      <button class="generate-btn" id="male-generate">Generate Male Names</button>
+    </div>
+    <div class="results-grid" id="male-results"></div>
+  </section>
+
+  <!-- FEMALE NAMES -->
+  <section class="generator-panel" id="tab-female" role="tabpanel">
+    <div class="panel-header">
+      <h2>Japanese Female Name Generator</h2>
+      <p>Generate random Japanese female first names with kanji and meanings. Includes popular and traditional Japanese girl names.</p>
+    </div>
+    <div class="controls">
+      <select class="count-select" id="female-count">
+        <option value="4">4 names</option>
+        <option value="8" selected>8 names</option>
+        <option value="12">12 names</option>
+        <option value="20">20 names</option>
+      </select>
+      <button class="generate-btn" id="female-generate">Generate Female Names</button>
+    </div>
+    <div class="results-grid" id="female-results"></div>
+  </section>
+
+  <!-- LAST NAMES -->
+  <section class="generator-panel" id="tab-family" role="tabpanel">
+    <div class="panel-header">
+      <h2>Japanese Last Name Generator</h2>
+      <p>Generate random Japanese family names (surnames) with kanji and meanings. Includes the most common Japanese last names.</p>
+    </div>
+    <div class="controls">
+      <select class="count-select" id="family-count">
+        <option value="4">4 names</option>
+        <option value="8" selected>8 names</option>
+        <option value="12">12 names</option>
+        <option value="20">20 names</option>
+      </select>
+      <button class="generate-btn" id="family-generate">Generate Last Names</button>
+    </div>
+    <div class="results-grid" id="family-results"></div>
+  </section>
+
+  <!-- CITY NAMES -->
+  <section class="generator-panel" id="tab-city" role="tabpanel">
+    <div class="panel-header">
+      <h2>Japanese City Name Generator</h2>
+      <p>Generate fictional Japanese city, town, and village names with kanji and meanings. Great for world-building, games, and creative writing.</p>
+    </div>
+    <div class="controls">
+      <select class="count-select" id="city-count">
+        <option value="4">4 names</option>
+        <option value="8" selected>8 names</option>
+        <option value="12">12 names</option>
+        <option value="20">20 names</option>
+      </select>
+      <button class="generate-btn" id="city-generate">Generate City Names</button>
+    </div>
+    <div class="results-grid" id="city-results"></div>
+  </section>
+
+  <!-- CLAN NAMES -->
+  <section class="generator-panel" id="tab-clan" role="tabpanel">
+    <div class="panel-header">
+      <h2>Japanese Clan Name Generator</h2>
+      <p>Generate Japanese clan and family names inspired by feudal Japan. Based on real historical clans — ideal for samurai stories, RPGs, and anime.</p>
+    </div>
+    <div class="controls">
+      <select class="count-select" id="clan-count">
+        <option value="4">4 names</option>
+        <option value="8" selected>8 names</option>
+        <option value="12">12 names</option>
+        <option value="20">20 names</option>
+      </select>
+      <button class="generate-btn" id="clan-generate">Generate Clan Names</button>
+    </div>
+    <div class="results-grid" id="clan-results"></div>
+  </section>
+
+  <!-- SEO CONTENT SECTION -->
+  <section class="info-section">
+    <h2>About This Japanese Name Generator</h2>
+    <div class="info-grid">
+      <div class="info-card">
+        <h3>With Meanings &amp; Kanji</h3>
+        <p>Every name includes its kanji characters and English meaning. Japanese names carry deep significance — each kanji conveys a concept like "brave," "lotus," or "morning light."</p>
+      </div>
+      <div class="info-card">
+        <h3>Male &amp; Female Names</h3>
+        <p>Japanese given names are typically gender-specific. Our generator separates male names (like Haruto, Kenji) from female names (like Sakura, Yui) with full kanji and meanings.</p>
+      </div>
+      <div class="info-card">
+        <h3>Last Names &amp; Family Names</h3>
+        <p>Japanese surnames come before the given name. The most common include Sato, Suzuki, and Tanaka. All surnames here include kanji and literal meaning.</p>
+      </div>
+      <div class="info-card">
+        <h3>City &amp; Clan Names</h3>
+        <p>Generate fictional Japanese city names for world-building, or historical clan names for samurai-era storytelling, anime characters, and tabletop RPGs.</p>
+      </div>
+    </div>
+
+    <h2 style="margin-top:2rem;">Frequently Asked Questions</h2>
+    <div class="faq-item">
+      <h3>How does a Japanese name generator work?</h3>
+      <p>It randomly selects authentic Japanese first names and family names from a curated database of real Japanese names, paired with their kanji characters and English meanings. Each click produces a unique combination.</p>
+    </div>
+    <div class="faq-item">
+      <h3>What is the structure of a Japanese name?</h3>
+      <p>In Japanese convention, the family name (surname) comes first, followed by the given name. For example: <strong>Tanaka Haruto</strong> — Tanaka is the family name, Haruto is the given name. In Western order, it would be Haruto Tanaka.</p>
+    </div>
+    <div class="faq-item">
+      <h3>Can I use generated names for my character or story?</h3>
+      <p>Yes — all generated names are freely usable for fiction, games, anime OCs, DnD characters, novels, or any creative project. We recommend researching the meaning to ensure it fits your character's personality.</p>
+    </div>
+    <div class="faq-item">
+      <h3>What do Japanese name meanings represent?</h3>
+      <p>Japanese names are written in kanji, each carrying a specific meaning. Parents carefully select kanji to give their child a name with a positive meaning. Common themes include nature (sakura = cherry blossom), virtues (makoto = sincerity), and aspirations (haruto = soaring sun).</p>
+    </div>
+    <div class="faq-item">
+      <h3>What is the most popular Japanese name generator?</h3>
+      <p>This tool covers all major generator types: random Japanese name generator, Japanese female name generator, Japanese male name generator, Japanese last name generator, and Japanese city name generator — all in one free tool with kanji and meanings.</p>
+    </div>
+  </section>
+
+</main>
+
+<div class="toast" id="toast">Copied to clipboard!</div>
+
+<footer>
+  <p>© 2026 Japanese Name Generator · <a href="https://japanesenames.github.io/japanese-name-generator/">japanesenames.github.io</a></p>
+  <p style="margin-top:0.4rem;">Free tool for writers, game developers, and Japanese language learners.</p>
+</footer>
+
+<!-- Name Database -->
+<script src="names.js"></script>
+
+<script>
+  // ── Utilities ──────────────────────────────────────────────
+  function pick(arr, n) {
+    const shuffled = [...arr].sort(() => Math.random() - 0.5);
+    return shuffled.slice(0, Math.min(n, arr.length));
+  }
+
+  function copyText(text) {
+    navigator.clipboard.writeText(text).catch(() => {});
+    const t = document.getElementById('toast');
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 2000);
+  }
+
+  // ── Render helpers ─────────────────────────────────────────
+  function renderCards(names, containerId, delay = 0) {
+    const container = document.getElementById(containerId);
+    container.innerHTML = '';
+    names.forEach((n, i) => {
+      const card = document.createElement('div');
+      card.className = 'name-card';
+      card.style.animationDelay = `${i * 60}ms`;
+      card.innerHTML = `
+        <div class="card-kanji">${n.kanji}</div>
+        <div class="card-name">${n.name}</div>
+        <div class="card-meaning">${n.meaning}</div>
+        <span class="card-copy">copy</span>
+      `;
+      card.addEventListener('click', () => copyText(`${n.name} (${n.kanji}) — ${n.meaning}`));
+      container.appendChild(card);
+    });
+  }
+
+  function renderFullNames(count, gender) {
+    const container = document.getElementById('full-results');
+    container.innerHTML = '';
+    let firstPool = [];
+    if (gender === 'male') firstPool = NAMES_DB.male;
+    else if (gender === 'female') firstPool = NAMES_DB.female;
+    else firstPool = Math.random() > 0.5 ? NAMES_DB.male : NAMES_DB.female;
+
+    const firstNames = pick(gender === 'random'
+      ? [...NAMES_DB.male, ...NAMES_DB.female]
+      : (gender === 'male' ? NAMES_DB.male : NAMES_DB.female), count);
+    const lastNames = pick(NAMES_DB.family, count);
+
+    firstNames.forEach((fn, i) => {
+      const ln = lastNames[i];
+      const el = document.createElement('div');
+      el.className = 'full-name-result';
+      el.style.animationDelay = `${i * 80}ms`;
+      el.innerHTML = `
+        <div class="full-name-kanji-block">${ln.kanji}${fn.kanji}</div>
+        <div class="full-name-details">
+          <div class="full-name-roman">${ln.name} ${fn.name}</div>
+          <div class="full-name-sub">${ln.name}: ${ln.meaning} &nbsp;·&nbsp; ${fn.name}: ${fn.meaning}</div>
+        </div>
+      `;
+      el.title = 'Click to copy';
+      el.addEventListener('click', () => copyText(`${ln.name} ${fn.name} (${ln.kanji}${fn.kanji})`));
+      container.appendChild(el);
+    });
+  }
+
+  // ── Tab switching ──────────────────────────────────────────
+  document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.generator-panel').forEach(p => p.classList.remove('active'));
+      btn.classList.add('active');
+      document.getElementById('tab-' + btn.dataset.tab).classList.add('active');
+    });
+  });
+
+  // ── Gender toggle (full name tab) ──────────────────────────
+  let selectedGender = 'random';
+  document.querySelectorAll('#full-gender .gender-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('#full-gender .gender-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      selectedGender = btn.dataset.gender;
+    });
+  });
+
+  // ── Generate buttons ───────────────────────────────────────
+  document.getElementById('full-generate').addEventListener('click', () => {
+    const count = parseInt(document.getElementById('full-count').value);
+    renderFullNames(count, selectedGender);
+  });
+
+  document.getElementById('male-generate').addEventListener('click', () => {
+    renderCards(pick(NAMES_DB.male, parseInt(document.getElementById('male-count').value)), 'male-results');
+  });
+
+  document.getElementById('female-generate').addEventListener('click', () => {
+    renderCards(pick(NAMES_DB.female, parseInt(document.getElementById('female-count').value)), 'female-results');
+  });
+
+  document.getElementById('family-generate').addEventListener('click', () => {
+    renderCards(pick(NAMES_DB.family, parseInt(document.getElementById('family-count').value)), 'family-results');
+  });
+
+  document.getElementById('city-generate').addEventListener('click', () => {
+    renderCards(pick(NAMES_DB.city, parseInt(document.getElementById('city-count').value)), 'city-results');
+  });
+
+  document.getElementById('clan-generate').addEventListener('click', () => {
+    renderCards(pick(NAMES_DB.clan, parseInt(document.getElementById('clan-count').value)), 'clan-results');
+  });
+
+  // ── Auto-generate on load ──────────────────────────────────
+  renderFullNames(5, 'random');
+</script>
+
+</body>
+</html>
